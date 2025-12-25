@@ -1,33 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class EntryPoint : MonoBehaviour
 {
-    [SerializeField] private AssetLabelReference statesLabel;
-    [SerializeField] private AssetLabelReference servicesLabel;
-    [SerializeField] private AssetLabelReference managersLabel;
     [SerializeField] private Transform managersContainer;
+    [SerializeField] private GDC globalDataContainer;
     
-    private AsyncOperationHandle<IList<GameState>> _statesHandle;
-    private AsyncOperationHandle<IList<GameService>> _servicesHandle;
-    private AsyncOperationHandle<IList<GameObject>> _managersHandle;
-    
-    private readonly List<GameState> _gameStates = new();
-    private readonly List<GameService> _gameServices = new();
-    private readonly List<SceneManager> _sceneManagers = new();
-    
-    private readonly List<GameObject> _managersPrefabs = new();
+    private List<GameSettings> _gameSettings = new();
+    private List<GameState> _gameStates = new();
+    private List<GameService> _gameServices = new();
+    private List<SceneManager> _sceneManagers = new();
+
+    private List<SceneManager> _managersPrefabs = new();
 
     private IEnumerator Start()
     {
         Application.quitting += End;
-        LoadAssets();
-        yield return _statesHandle;
-        yield return _servicesHandle;
-        yield return _managersHandle;
+        yield return InitializeAssets();
+        yield return GetSettings();
         yield return LoadGameStates();
         yield return RunServices();
         yield return InitializeManagers();
@@ -35,12 +26,21 @@ public class EntryPoint : MonoBehaviour
         Eventer.Invoke(new SceneStarted());
     }
 
-    private void LoadAssets()
+    private IEnumerator InitializeAssets() 
     {
-        _statesHandle = Addressables.LoadAssetsAsync<GameState>(statesLabel.RuntimeKey, state => _gameStates.Add(state));
-        _servicesHandle = Addressables.LoadAssetsAsync<GameService>(servicesLabel.RuntimeKey, service => _gameServices.Add(service));
-        _managersHandle = Addressables.LoadAssetsAsync<GameObject>(managersLabel.RuntimeKey, manager => _managersPrefabs.Add(manager));
+        yield return globalDataContainer.Initialize();
+        G.CacheData(globalDataContainer);
+        _gameSettings = G.Data().GetData<GameSettingsContainer>().GetAllSettings;
+        _gameStates = G.Data().GetData<GameStatesContainer>().GetAllStates;
+        _gameServices = G.Data().GetData<GameServicesContainer>().GetAllServices;
+        _managersPrefabs = G.Data().GetData<SceneManagersContainer>().GetAllSceneManagers;
+        foreach (var prefab in _managersPrefabs)
+        {
+            Debug.Log(prefab.name);
+        }
     }
+
+    private IEnumerator GetSettings() { G.CacheGameSettings(_gameSettings); yield break; }
 
     private IEnumerator LoadGameStates()
     {
@@ -58,9 +58,10 @@ public class EntryPoint : MonoBehaviour
     
     private IEnumerator InitializeManagers()
     {
+        _sceneManagers = new List<SceneManager>();
         foreach (var prefab in _managersPrefabs)
         {
-            var managerInstance = Spawner.Spawn(prefab, Vector3.zero, Quaternion.identity, managersContainer).GetComponent<SceneManager>();
+            var managerInstance = Spawner.Spawn(prefab, Vector3.zero, Quaternion.identity, managersContainer);
             managerInstance.gameObject.name = prefab.name;
             _sceneManagers.Add(managerInstance);
             yield return managerInstance.Initialize();
@@ -91,7 +92,7 @@ public class EntryPoint : MonoBehaviour
         Eventer.ClearSubscribers();
         G.ResetData();
     }
-
+    
     private void AnnounceOnEnd()
     {
         var allSystemClasses = new List<Object>();
@@ -106,7 +107,6 @@ public class EntryPoint : MonoBehaviour
     {
         foreach (var manager in _sceneManagers) { manager.Deinitialize(); }
         _sceneManagers.Clear();
-        _managersHandle.Release();
         Eventer.Invoke(new ManagersDeinitialized());
     }
     
@@ -114,7 +114,6 @@ public class EntryPoint : MonoBehaviour
     {
         foreach (var service in _gameServices) { service.Stop(); }
         _gameServices.Clear();
-        _servicesHandle.Release();
         Eventer.Invoke(new ServicesStopped());
     }
 
@@ -122,7 +121,6 @@ public class EntryPoint : MonoBehaviour
     {
         foreach (var state in _gameStates) { state.Unload(); }
         _gameStates.Clear();
-        _statesHandle.Release();
         Eventer.Invoke(new StatesUnloaded());
     }
 }

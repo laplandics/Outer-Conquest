@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 14a9a733f6732d9479f79105ccf38414
   m_currentHash:
     serializedVersion: 2
-    Hash: 96698ec1d8a9a9446e9f0a56f41d6a06
+    Hash: 3e6141fd746ba9057a07784221431427
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -99,9 +99,7 @@ MonoBehaviour:
     m_ProfileVersion: 1
   m_LabelTable:
     m_LabelNames:
-    - Services
-    - Managers
-    - States
+    - Data
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 50856d35610f46a43af9f7ab1e802444, type: 2}

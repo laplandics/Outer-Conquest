@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5373d18baa448669a70db7155a589e5, type: 3}
+  m_Name: SceneManagers
+  m_EditorClassIdentifier: Assembly-CSharp::SceneManagersContainer
+  entityManager: {fileID: 7200753678456690581, guid: 2c986dd07429e79459b1b22d4e3cc688, type: 3}
+  routineManager: {fileID: 8667039005254781496, guid: 1affad33c470ad74f806fcf7b0ef61fa, type: 3}
+  selectionManager: {fileID: 5500164435684205167, guid: b84824a34e3a6ad449cebfa3f8e20d1a, type: 3}
