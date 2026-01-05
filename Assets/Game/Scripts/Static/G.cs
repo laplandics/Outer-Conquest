@@ -4,15 +4,15 @@ using System.Collections.Generic;
 public static class G
 {
     private static GDC _globalDataContainer;
-    private static readonly Dictionary<Type, GameSettings> Settings = new();
+    private static readonly Dictionary<Type, Preferences> Preferences = new();
     private static readonly Dictionary<Type, GameState> States = new();
     private static readonly Dictionary<Type, SceneManager> Managers =  new();
     private static readonly Dictionary<Type, GameService> Services = new();
 
     public static void CacheData(GDC data) => _globalDataContainer = data;
     
-    public static void CacheGameSettings(List<GameSettings> settings)
-    { foreach (var setting in settings) { Settings.TryAdd(setting.GetType(), setting); } }
+    public static void CacheGamePreferences(List<Preferences> settings)
+    { foreach (var setting in settings) { Preferences.TryAdd(setting.GetType(), setting); } }
     
     public static void CacheGameStates(List<GameState> states)
     { foreach (var state in states) { States.TryAdd(state.GetType(), state); } }
@@ -25,9 +25,9 @@ public static class G
 
     public static GDC Data() => _globalDataContainer;
     
-    public static T GetSettings<T>()
+    public static T GetPreferences<T>()
     {
-        if (!Settings.TryGetValue(typeof(T), out var setting)) return default;
+        if (!Preferences.TryGetValue(typeof(T), out var setting)) return default;
         return setting is not T searchingSettings ? default : searchingSettings;
     }
     

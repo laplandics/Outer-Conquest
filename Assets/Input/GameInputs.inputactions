@@ -1127,7 +1127,7 @@
             ]
         },
         {
-            "name": "Game",
+            "name": "System",
             "id": "c4906c1a-547b-4710-adb0-fc0140e4043a",
             "actions": [
                 {
@@ -1176,12 +1176,12 @@
         },
         {
             "name": "Entity",
-            "id": "09acb84c-e691-4494-885d-e292eb4d99f0",
+            "id": "841cf96b-73b7-44f8-a84d-eb68082e8a28",
             "actions": [
                 {
-                    "name": "Select",
+                    "name": "LeftClick",
                     "type": "Button",
-                    "id": "c9061414-c840-4d6b-a846-034122b55d1d",
+                    "id": "0a883836-7a44-4bb4-9226-7926d1227901",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -1191,12 +1191,12 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "570bd30e-f2e0-4a4a-b456-f97ae1ad4e9c",
+                    "id": "7bc9b057-2da0-4d30-bd6f-e650e1ff58b3",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "LeftClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

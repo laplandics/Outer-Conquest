@@ -1,25 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class E
 {
-    public static void NewEntity<T>(EntityData data, Action<T> onLoad) where T : Entity
+    public static T NewEntity<T>(EntityData data) where T : Entity
     {
-        var newObject = new GameObject(data.entityType.ToString()).AddComponent<T>();
-        newObject.Load(data);
+        var newEntity = new GameObject(data.entityType.ToString()).AddComponent<T>();
+        newEntity.Load(data);
+        newEntity.Enable();
+        Eventer.Invoke(new EntitySpawned { SpawnedEntity = newEntity });
+        return newEntity;
     }
 
-    public static void NewEntity(EntityData data, Action<Entity> onLoad)
+    public static Entity NewEntity(EntityData data)
     {
         var entityTypeName = data.entityType.ToString();
         var type = Type.GetType(entityTypeName);
-        var newObject = new GameObject(entityTypeName).AddComponent(type) as Entity;
-        if (newObject == null) throw new Exception($"Could not find type {entityTypeName} for new entity");
-        newObject.Load(data);
+        var newEntity = new GameObject(entityTypeName).AddComponent(type) as Entity;
+        if (newEntity == null) throw new Exception($"Could not find type {entityTypeName} for new entity");
+        newEntity.Load(data);
+        newEntity.Enable();
+        Eventer.Invoke(new EntitySpawned { SpawnedEntity = newEntity });
+        return newEntity;
     }
-
+    
     public static void DeleteEntity(Entity entity)
     {
+        if (entity == null) return;
+        Eventer.Invoke(new EntityDespawned { DespawnedEntity = entity });
         entity.Disable();
         Spawner.Despawn(entity.gameObject);
     }

@@ -5,9 +5,8 @@ using UnityEngine;
 public class EntryPoint : MonoBehaviour
 {
     [SerializeField] private Transform managersContainer;
-    [SerializeField] private GDC globalDataContainer;
     
-    private List<GameSettings> _gameSettings = new();
+    private List<Preferences> _gamePreferences = new();
     private List<GameState> _gameStates = new();
     private List<GameService> _gameServices = new();
     private List<SceneManager> _sceneManagers = new();
@@ -28,19 +27,14 @@ public class EntryPoint : MonoBehaviour
 
     private IEnumerator InitializeAssets() 
     {
-        yield return globalDataContainer.Initialize();
-        G.CacheData(globalDataContainer);
-        _gameSettings = G.Data().GetData<GameSettingsContainer>().GetAllSettings;
-        _gameStates = G.Data().GetData<GameStatesContainer>().GetAllStates;
-        _gameServices = G.Data().GetData<GameServicesContainer>().GetAllServices;
-        _managersPrefabs = G.Data().GetData<SceneManagersContainer>().GetAllSceneManagers;
-        foreach (var prefab in _managersPrefabs)
-        {
-            Debug.Log(prefab.name);
-        }
+        yield return G.Data().Initialize();
+        _gamePreferences = G.Data().GetData<Preferences>().GetAssets();
+        _gameStates = G.Data().GetData<GameState>().GetAssets();
+        _gameServices = G.Data().GetData<GameService>().GetAssets();
+        _managersPrefabs = G.Data().GetData<SceneManager>().GetAssets();
     }
 
-    private IEnumerator GetSettings() { G.CacheGameSettings(_gameSettings); yield break; }
+    private IEnumerator GetSettings() { G.CacheGamePreferences(_gamePreferences); yield break; }
 
     private IEnumerator LoadGameStates()
     {
@@ -90,6 +84,7 @@ public class EntryPoint : MonoBehaviour
         StopServices();
         UnloadStates();
         Eventer.ClearSubscribers();
+        G.Data().Dispose();
         G.ResetData();
     }
     

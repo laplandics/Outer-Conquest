@@ -21,6 +21,30 @@ MonoBehaviour:
     m_SerializedLabels:
     - Data
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83823f248e864334a888497ae3667e12
+    m_Address: Preferences
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Preferences
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91dc9a769b312a941bddfbc3f33e69b3
+    m_Address: Services
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Services
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9ddeacdb7440274c8b9bb46e7d655c8
+    m_Address: States
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - States
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef8ef68b3200a3349a3c7c3fbfc1ac2f
+    m_Address: Managers
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Manages
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 60ee6abd810595e43bfd5a4bdac354a5, type: 2}
   m_SchemaSet:

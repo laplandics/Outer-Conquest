@@ -1213,7 +1213,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Game"",
+            ""name"": ""System"",
             ""id"": ""c4906c1a-547b-4710-adb0-fc0140e4043a"",
             ""actions"": [
                 {
@@ -1262,12 +1262,12 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         },
         {
             ""name"": ""Entity"",
-            ""id"": ""09acb84c-e691-4494-885d-e292eb4d99f0"",
+            ""id"": ""841cf96b-73b7-44f8-a84d-eb68082e8a28"",
             ""actions"": [
                 {
-                    ""name"": ""Select"",
+                    ""name"": ""LeftClick"",
                     ""type"": ""Button"",
-                    ""id"": ""c9061414-c840-4d6b-a846-034122b55d1d"",
+                    ""id"": ""0a883836-7a44-4bb4-9226-7926d1227901"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1277,12 +1277,12 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""570bd30e-f2e0-4a4a-b456-f97ae1ad4e9c"",
+                    ""id"": ""7bc9b057-2da0-4d30-bd6f-e650e1ff58b3"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Select"",
+                    ""action"": ""LeftClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1380,13 +1380,13 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         m_Camera_Position = m_Camera.FindAction("Position", throwIfNotFound: true);
         m_Camera_RotationSwitcher = m_Camera.FindAction("RotationSwitcher", throwIfNotFound: true);
         m_Camera_Zoom = m_Camera.FindAction("Zoom", throwIfNotFound: true);
-        // Game
-        m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
-        m_Game_Save = m_Game.FindAction("Save", throwIfNotFound: true);
-        m_Game_Load = m_Game.FindAction("Load", throwIfNotFound: true);
+        // System
+        m_System = asset.FindActionMap("System", throwIfNotFound: true);
+        m_System_Save = m_System.FindAction("Save", throwIfNotFound: true);
+        m_System_Load = m_System.FindAction("Load", throwIfNotFound: true);
         // Entity
         m_Entity = asset.FindActionMap("Entity", throwIfNotFound: true);
-        m_Entity_Select = m_Entity.FindAction("Select", throwIfNotFound: true);
+        m_Entity_LeftClick = m_Entity.FindAction("LeftClick", throwIfNotFound: true);
     }
 
     ~@GameInputs()
@@ -1394,7 +1394,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, GameInputs.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, GameInputs.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Camera.enabled, "This will cause a leak and performance issues, GameInputs.Camera.Disable() has not been called.");
-        UnityEngine.Debug.Assert(!m_Game.enabled, "This will cause a leak and performance issues, GameInputs.Game.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_System.enabled, "This will cause a leak and performance issues, GameInputs.System.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Entity.enabled, "This will cause a leak and performance issues, GameInputs.Entity.Disable() has not been called.");
     }
 
@@ -1965,34 +1965,34 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     /// </summary>
     public CameraActions @Camera => new CameraActions(this);
 
-    // Game
-    private readonly InputActionMap m_Game;
-    private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
-    private readonly InputAction m_Game_Save;
-    private readonly InputAction m_Game_Load;
+    // System
+    private readonly InputActionMap m_System;
+    private List<ISystemActions> m_SystemActionsCallbackInterfaces = new List<ISystemActions>();
+    private readonly InputAction m_System_Save;
+    private readonly InputAction m_System_Load;
     /// <summary>
-    /// Provides access to input actions defined in input action map "Game".
+    /// Provides access to input actions defined in input action map "System".
     /// </summary>
-    public struct GameActions
+    public struct SystemActions
     {
         private @GameInputs m_Wrapper;
 
         /// <summary>
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
-        public GameActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public SystemActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Game/Save".
+        /// Provides access to the underlying input action "System/Save".
         /// </summary>
-        public InputAction @Save => m_Wrapper.m_Game_Save;
+        public InputAction @Save => m_Wrapper.m_System_Save;
         /// <summary>
-        /// Provides access to the underlying input action "Game/Load".
+        /// Provides access to the underlying input action "System/Load".
         /// </summary>
-        public InputAction @Load => m_Wrapper.m_Game_Load;
+        public InputAction @Load => m_Wrapper.m_System_Load;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
-        public InputActionMap Get() { return m_Wrapper.m_Game; }
+        public InputActionMap Get() { return m_Wrapper.m_System; }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
         public void Enable() { Get().Enable(); }
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
@@ -2000,9 +2000,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
         public bool enabled => Get().enabled;
         /// <summary>
-        /// Implicitly converts an <see ref="GameActions" /> to an <see ref="InputActionMap" /> instance.
+        /// Implicitly converts an <see ref="SystemActions" /> to an <see ref="InputActionMap" /> instance.
         /// </summary>
-        public static implicit operator InputActionMap(GameActions set) { return set.Get(); }
+        public static implicit operator InputActionMap(SystemActions set) { return set.Get(); }
         /// <summary>
         /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
         /// </summary>
@@ -2010,11 +2010,11 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
         /// </remarks>
-        /// <seealso cref="GameActions" />
-        public void AddCallbacks(IGameActions instance)
+        /// <seealso cref="SystemActions" />
+        public void AddCallbacks(ISystemActions instance)
         {
-            if (instance == null || m_Wrapper.m_GameActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_GameActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_SystemActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_SystemActionsCallbackInterfaces.Add(instance);
             @Save.started += instance.OnSave;
             @Save.performed += instance.OnSave;
             @Save.canceled += instance.OnSave;
@@ -2029,8 +2029,8 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// <remarks>
         /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
         /// </remarks>
-        /// <seealso cref="GameActions" />
-        private void UnregisterCallbacks(IGameActions instance)
+        /// <seealso cref="SystemActions" />
+        private void UnregisterCallbacks(ISystemActions instance)
         {
             @Save.started -= instance.OnSave;
             @Save.performed -= instance.OnSave;
@@ -2041,12 +2041,12 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         }
 
         /// <summary>
-        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="GameActions.UnregisterCallbacks(IGameActions)" />.
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="SystemActions.UnregisterCallbacks(ISystemActions)" />.
         /// </summary>
-        /// <seealso cref="GameActions.UnregisterCallbacks(IGameActions)" />
-        public void RemoveCallbacks(IGameActions instance)
+        /// <seealso cref="SystemActions.UnregisterCallbacks(ISystemActions)" />
+        public void RemoveCallbacks(ISystemActions instance)
         {
-            if (m_Wrapper.m_GameActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_SystemActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
@@ -2056,26 +2056,26 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// <remarks>
         /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
         /// </remarks>
-        /// <seealso cref="GameActions.AddCallbacks(IGameActions)" />
-        /// <seealso cref="GameActions.RemoveCallbacks(IGameActions)" />
-        /// <seealso cref="GameActions.UnregisterCallbacks(IGameActions)" />
-        public void SetCallbacks(IGameActions instance)
+        /// <seealso cref="SystemActions.AddCallbacks(ISystemActions)" />
+        /// <seealso cref="SystemActions.RemoveCallbacks(ISystemActions)" />
+        /// <seealso cref="SystemActions.UnregisterCallbacks(ISystemActions)" />
+        public void SetCallbacks(ISystemActions instance)
         {
-            foreach (var item in m_Wrapper.m_GameActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_SystemActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_GameActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_SystemActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
     /// <summary>
-    /// Provides a new <see cref="GameActions" /> instance referencing this action map.
+    /// Provides a new <see cref="SystemActions" /> instance referencing this action map.
     /// </summary>
-    public GameActions @Game => new GameActions(this);
+    public SystemActions @System => new SystemActions(this);
 
     // Entity
     private readonly InputActionMap m_Entity;
     private List<IEntityActions> m_EntityActionsCallbackInterfaces = new List<IEntityActions>();
-    private readonly InputAction m_Entity_Select;
+    private readonly InputAction m_Entity_LeftClick;
     /// <summary>
     /// Provides access to input actions defined in input action map "Entity".
     /// </summary>
@@ -2088,9 +2088,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// </summary>
         public EntityActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Entity/Select".
+        /// Provides access to the underlying input action "Entity/LeftClick".
         /// </summary>
-        public InputAction @Select => m_Wrapper.m_Entity_Select;
+        public InputAction @LeftClick => m_Wrapper.m_Entity_LeftClick;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2117,9 +2117,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_EntityActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_EntityActionsCallbackInterfaces.Add(instance);
-            @Select.started += instance.OnSelect;
-            @Select.performed += instance.OnSelect;
-            @Select.canceled += instance.OnSelect;
+            @LeftClick.started += instance.OnLeftClick;
+            @LeftClick.performed += instance.OnLeftClick;
+            @LeftClick.canceled += instance.OnLeftClick;
         }
 
         /// <summary>
@@ -2131,9 +2131,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="EntityActions" />
         private void UnregisterCallbacks(IEntityActions instance)
         {
-            @Select.started -= instance.OnSelect;
-            @Select.performed -= instance.OnSelect;
-            @Select.canceled -= instance.OnSelect;
+            @LeftClick.started -= instance.OnLeftClick;
+            @LeftClick.performed -= instance.OnLeftClick;
+            @LeftClick.canceled -= instance.OnLeftClick;
         }
 
         /// <summary>
@@ -2411,11 +2411,11 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         void OnZoom(InputAction.CallbackContext context);
     }
     /// <summary>
-    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Game" which allows adding and removing callbacks.
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "System" which allows adding and removing callbacks.
     /// </summary>
-    /// <seealso cref="GameActions.AddCallbacks(IGameActions)" />
-    /// <seealso cref="GameActions.RemoveCallbacks(IGameActions)" />
-    public interface IGameActions
+    /// <seealso cref="SystemActions.AddCallbacks(ISystemActions)" />
+    /// <seealso cref="SystemActions.RemoveCallbacks(ISystemActions)" />
+    public interface ISystemActions
     {
         /// <summary>
         /// Method invoked when associated input action "Save" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
@@ -2440,11 +2440,11 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     public interface IEntityActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Select" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "LeftClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSelect(InputAction.CallbackContext context);
+        void OnLeftClick(InputAction.CallbackContext context);
     }
 }

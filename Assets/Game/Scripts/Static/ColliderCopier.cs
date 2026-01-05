@@ -8,7 +8,7 @@ public static class ColliderCopier
         var copy = target.AddComponent(type) as Collider;
         if (copy == null) return null;
         copy.isTrigger = source.isTrigger;
-        copy.material  = source.material;
+        copy.material = source.material;
         switch (source)
         {
             case BoxCollider b when copy is BoxCollider cb:
