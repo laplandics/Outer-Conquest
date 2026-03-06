@@ -5,10 +5,15 @@ namespace G
 {
     public static class Coroutine
     {
-        private static CoroutineEmpty _empty;
+        private static Empty _empty;
 
         public static void Launch()
-        { _empty = new GameObject().AddComponent<CoroutineEmpty>(); _empty.Initialize(); }
+        {
+            _empty = Object.FindFirstObjectByType<Empty>();
+            if (_empty != null) return;
+            _empty = new GameObject().AddComponent<Empty>();
+            _empty.Initialize();
+        }
         
         public static UnityEngine.Coroutine Start(IEnumerator routine)
         { var coroutine = _empty.StartCoroutine(routine); return coroutine; }

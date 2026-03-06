@@ -5,24 +5,15 @@ using UnityEngine;
 public class SceneEntryPoint : MonoBehaviour
 {
     private Service[] _services;
-    private Entity<Cam> _mainCameraEntity;
     
     public IEnumerator StartScene()
     {
-        CreateMainCamera();
         yield return LoadServices();
         G.Input.Enable();
     }
 
-    private void CreateMainCamera()
-    {
-        var camData = Data.NewGameCamera(CamType.GameplayCam);
-        _mainCameraEntity = new Entity<Cam>(camData);
-    }
-
     public IEnumerator EndScene()
     {
-        _mainCameraEntity.Destroy();
         G.Input.Disable();
         yield return UnloadServices();
     }

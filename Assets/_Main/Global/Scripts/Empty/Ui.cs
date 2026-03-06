@@ -5,10 +5,15 @@ namespace G
 {
     public static class Ui
     {
-        private static UiEmpty _empty;
+        private static Empty _empty;
 
         public static void Launch()
-        { _empty = new GameObject().AddComponent<UiEmpty>(); _empty.Initialize(); }
+        {
+            _empty = Object.FindFirstObjectByType<Empty>();
+            if (_empty != null) return;
+            _empty = new GameObject().AddComponent<Empty>();
+            _empty.Initialize();
+        }
 
         public static T Create<T>(IUiUser user) where T : GameUi
         {

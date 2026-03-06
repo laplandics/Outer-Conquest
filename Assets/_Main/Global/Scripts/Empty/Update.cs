@@ -6,16 +6,21 @@ namespace G
 {
     public static class Update
     {
-        private static UpdateEmpty _empty;
+        private static Empty _empty;
 
         public static void Launch()
-        { _empty = new GameObject().AddComponent<UpdateEmpty>(); _empty.Initialize(); }
+        {
+            _empty = Object.FindFirstObjectByType<Empty>();
+            if (_empty != null) return;
+            _empty = new GameObject().AddComponent<Empty>();
+            _empty.Initialize();
+        }
         
         public static void SetNewUpdate(Action update)
-        { _empty.SetNewUpdate(update, UpdateEmpty.UpdateType.Update); }
+        { _empty.SetNewUpdate(update, Empty.UpdateType.Update); }
         
         public static void SetNewLateUpdate(Action update)
-        {_empty.SetNewUpdate(update, UpdateEmpty.UpdateType.LateUpdate); }
+        {_empty.SetNewUpdate(update, Empty.UpdateType.LateUpdate); }
         
         public static void Forget(Action update) { _empty.RemoveUpdate(update); }
 

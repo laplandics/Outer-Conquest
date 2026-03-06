@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpdateEmpty : MonoBehaviour
+public class Empty : MonoBehaviour
 {
-    public enum UpdateType
-    { Update, LateUpdate }
+    public enum UpdateType { Update, LateUpdate }
     
+    public List<Action> GizmosActions = new();
     private List<Action> _updateActions = new();
     private List<Action> _lateUpdateActions = new();
     
     public void Initialize()
-    { gameObject.name = "Update"; DontDestroyOnLoad(gameObject); }
+    { gameObject.name = "Empty"; DontDestroyOnLoad(gameObject); }
 
     public void SetNewUpdate(Action action, UpdateType type)
     {
@@ -33,4 +33,7 @@ public class UpdateEmpty : MonoBehaviour
 
     private void LateUpdate()
     { if (_lateUpdateActions.Count == 0) return; foreach (var action in _lateUpdateActions) action?.Invoke(); }
+    
+    private void OnDrawGizmos()
+    { if (GizmosActions.Count == 0) return; foreach (var action in GizmosActions) action?.Invoke(); }
 }
